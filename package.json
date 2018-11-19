@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,11 @@
   "bugs": {
     "url": "https://github.com/tengattack/eslint-plugin-php-markup/issues"
   },
-  "homepage": "https://github.com/tengattack/eslint-plugin-php-markup#readme"
+  "homepage": "https://github.com/tengattack/eslint-plugin-php-markup#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-plugin-html": "^4.0.6",
+    "mocha": "^5.2.0",
+    "should": "^13.2.3"
+  }
 }
