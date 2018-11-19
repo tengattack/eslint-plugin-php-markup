@@ -6,7 +6,7 @@ It can make us get rid of "Unexpected token <" errors in .php files.
 
 ## Principle
 
-This plugin just replace every php markup `<? ... ?>` to `0`.
+This plugin just replace every php markup `<? ... ?>` to other text.
 
 ## Installation
 
@@ -26,7 +26,12 @@ BTW, it works like a charm together with [`eslint-plugin-html`](https://github.c
   "plugins": [
     "html",
     "php-markup"
-  ]
+  ],
+  "settings": {
+    "php/php-extensions": [".php"],
+    "php/markup-replacement": {"php": "", "=": "0"},
+    "php/keep-eol": false
+  },
   // ...
 }
 ```
