@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-php-markup",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A eslint plugin to process PHP markup",
   "main": "lib/index.js",
   "directories": {
