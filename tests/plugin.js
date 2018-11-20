@@ -95,7 +95,7 @@ it('keep-eol should work', () => {
   assertLineColumn(messages, [[7, 7], [11, 7]])
 })
 
-it('remove-empty-line should work', () => {
+it('remove-whitespace should work', () => {
   let messages = execute('html.php', {
     plugins: ['html'],
     settings: {
@@ -117,7 +117,7 @@ it('remove-empty-line should work', () => {
     plugins: ['html'],
     settings: {
       'php/keep-eol': true,
-      'php/remove-empty-line': true,
+      'php/remove-whitespace': true,
     },
     rules: {
       'no-trailing-spaces': 'error',
@@ -129,7 +129,7 @@ it('remove-empty-line should work', () => {
     plugins: ['html'],
     settings: {
       'php/keep-eol': false,
-      'php/remove-empty-line': true,
+      'php/remove-whitespace': true,
     },
     rules: {
       'no-trailing-spaces': 'error',

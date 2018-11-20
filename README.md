@@ -31,7 +31,7 @@ BTW, it works like a charm together with [`eslint-plugin-html`](https://github.c
     "php/php-extensions": [".php"],
     "php/markup-replacement": {"php": "", "=": "0"},
     "php/keep-eol": false,
-    "php/remove-empty-line": false
+    "php/remove-whitespace": false
   },
   // ...
 }
