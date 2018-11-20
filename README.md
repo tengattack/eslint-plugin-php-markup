@@ -30,7 +30,8 @@ BTW, it works like a charm together with [`eslint-plugin-html`](https://github.c
   "settings": {
     "php/php-extensions": [".php"],
     "php/markup-replacement": {"php": "", "=": "0"},
-    "php/keep-eol": false
+    "php/keep-eol": false,
+    "php/remove-empty-line": false
   },
   // ...
 }

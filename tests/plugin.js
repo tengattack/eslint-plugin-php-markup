@@ -15,7 +15,7 @@ function execute(file, baseConfig) {
       settings: baseConfig.settings,
       rules: Object.assign(
         {
-          "no-console": 2,
+          'no-console': 'error',
         },
         baseConfig.rules
       ),
@@ -34,34 +34,45 @@ function execute(file, baseConfig) {
   return baseConfig.fix ? results : results && results.messages
 }
 
+function assertLineColumn(messages, linecols) {
+  messages.length.should.be.exactly(linecols.length)
+  for (var i = 0; i < messages.length; i++) {
+    messages[i].line.should.be.exactly(linecols[i][0])
+    messages[i].column.should.be.exactly(linecols[i][1])
+    if (linecols[i][2]) {
+      messages[i].ruleId.should.equal(linecols[i][2])
+    }
+  }
+}
+
 it('should work', () => {
   const messages = execute('simple.js.php')
-  messages.length.should.be.exactly(2)
+  assertLineColumn(messages, [[4, 3], [6, 3]])
 })
 
 it('should work with html', () => {
   const messages = execute('html.php', { plugins: ['html'] })
-  messages.length.should.be.exactly(2)
+  assertLineColumn(messages, [[7, 7], [11, 7]])
 })
 
-it('php extension should be set', () => {
+it('php-extension should be set', () => {
   const messages = execute('simple.js.php', {
     settings: {
       "php/php-extension": ['.php5'],
     },
   })
   // no check here
-  messages.length.should.be.exactly(0)
+  assertLineColumn(messages, [])
 })
 
-it('markup replacement should be set', () => {
+it('markup-replacement should be set', () => {
   let messages = execute('html.php', {
     plugins: ['html'],
     settings: {
       'php/markup-replacement': { 'php': 'console.log(1);', '=': '0' },
     },
   })
-  messages.length.should.be.exactly(4)
+  assertLineColumn(messages, [[7, 7], [8, 7], [10, 7], [11, 7]])
 
   messages = execute('html.php', {
     plugins: ['html'],
@@ -81,5 +92,48 @@ it('keep-eol should work', () => {
       'php/keep-eol': true,  // default: false
     },
   })
-  messages.length.should.be.exactly(2)
+  assertLineColumn(messages, [[7, 7], [11, 7]])
+})
+
+it('remove-empty-line should work', () => {
+  let messages = execute('html.php', {
+    plugins: ['html'],
+    settings: {
+      'php/keep-eol': true,
+    },
+    rules: {
+      'no-trailing-spaces': 'error',
+    }
+  })
+  assertLineColumn(messages, [
+    [7, 7],
+    [8, 5, 'no-trailing-spaces'],
+    [10, 5, 'no-trailing-spaces'],
+    [11, 7],
+  ])
+
+  // remove empty line
+  messages = execute('html.php', {
+    plugins: ['html'],
+    settings: {
+      'php/keep-eol': true,
+      'php/remove-empty-line': true,
+    },
+    rules: {
+      'no-trailing-spaces': 'error',
+    }
+  })
+  assertLineColumn(messages, [[7, 7], [11, 7]])
+
+  messages = execute('html.php', {
+    plugins: ['html'],
+    settings: {
+      'php/keep-eol': false,
+      'php/remove-empty-line': true,
+    },
+    rules: {
+      'no-trailing-spaces': 'error',
+    }
+  })
+  assertLineColumn(messages, [[7, 7], [11, 7]])
 })
