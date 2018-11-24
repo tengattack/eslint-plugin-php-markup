@@ -103,7 +103,7 @@ it('remove-whitespace should work', () => {
     },
     rules: {
       'no-trailing-spaces': 'error',
-    }
+    },
   })
   assertLineColumn(messages, [
     [7, 7],
@@ -121,7 +121,7 @@ it('remove-whitespace should work', () => {
     },
     rules: {
       'no-trailing-spaces': 'error',
-    }
+    },
   })
   assertLineColumn(messages, [[7, 7], [11, 7]])
 
@@ -133,7 +133,45 @@ it('remove-whitespace should work', () => {
     },
     rules: {
       'no-trailing-spaces': 'error',
-    }
+    },
   })
   assertLineColumn(messages, [[7, 7], [11, 7]])
+
+  messages = execute('empty-line.php', {
+    plugins: ['html'],
+    settings: {
+      'php/keep-eol': false,
+      'php/remove-whitespace': true,
+      'php/markup-replacement': { 'php': 'console.log(1);', '=': '0' },
+    },
+    rules: {
+      'no-trailing-spaces': 'error',
+    },
+  })
+  assertLineColumn(messages, [
+    [7, 7], [8, 7], [8, 36], [9, 55], [11, 5], [12, 7],
+  ])
+})
+
+it('remove-empty-line should work', () => {
+  let messages = execute('empty-line.php', {
+    plugins: ['html'],
+    settings: {
+      'php/remove-empty-line': true,
+    },
+  })
+  // Parsing error
+  messages.length.should.be.exactly(1)
+  messages[0].message.should.startWith('Parsing error:')
+
+  messages = execute('empty-line.php', {
+    plugins: ['html'],
+    settings: {
+      'php/remove-empty-line': true,
+      'php/markup-replacement': { 'php': 'console.log(1);', '=': '' },
+    },
+  })
+  assertLineColumn(messages, [
+    [7, 7], [8, 7], [8, 36], [9, 55], [12, 7],
+  ])
 })
