@@ -175,3 +175,28 @@ it('remove-empty-line should work', () => {
     [7, 7], [8, 7], [8, 36], [9, 55], [12, 7],
   ])
 })
+
+it('remove-php-lint should work', () => {
+  let messages = execute('html.php', {
+    plugins: ['html'],
+    settings: {
+      'php/markup-replacement': { 'php': '', '=': '0;' },
+      'php/remove-php-lint': true,
+    },
+    rules: {
+      'no-extra-semi': 'error',
+    },
+  })
+  assertLineColumn(messages, [[7, 7], [11, 7]])
+
+  messages = execute('html.php', {
+    plugins: ['html'],
+    settings: {
+      'php/markup-replacement': { 'php': '', '=': '0;' },
+    },
+    rules: {
+      'no-extra-semi': 'error',
+    },
+  })
+  assertLineColumn(messages, [[7, 7], [9, 79], [11, 7]])
+})

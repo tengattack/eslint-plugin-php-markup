@@ -33,6 +33,7 @@ BTW, it works like a charm together with [`eslint-plugin-html`](https://github.c
     "php/keep-eol": false,
     "php/remove-whitespace": false,
     "php/remove-empty-line": false,
+    "php/remove-php-lint": false
   },
   // ...
 }
